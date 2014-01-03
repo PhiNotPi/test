@@ -246,7 +246,7 @@ def get_best_move(board, recurse_depth = 0, moves_so_far = []):
     return b + moves_so_far
 
 def is_draw(board):
-    return len(get_valid_moves(board, Checker.PLAYER_ONE)) == 0 and len(get_valid_moves(board, Checker.PLAYER_TWO)) == 0:
+    return len(get_valid_moves(board, Checker.PLAYER_ONE)) == 0 and len(get_valid_moves(board, Checker.PLAYER_TWO)) == 0
 
 if __name__ == '__main__':
     players = input('Enter number of players (1 or 2): ')
