@@ -243,7 +243,7 @@ def get_best_move(board, recurse_depth = 0, moves_so_far = []):
     best_board = boards[0]
     for b in boards:
         if b[1] > best_board[1]: best_board = b
-    return b + moves_so_far
+    return best_board + moves_so_far
 
 def is_draw(board):
     return len(get_valid_moves(board, Checker.PLAYER_ONE)) == 0 and len(get_valid_moves(board, Checker.PLAYER_TWO)) == 0
