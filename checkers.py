@@ -303,17 +303,18 @@ def get_best_move(board, recurse_depth = 0, moves_so_far = [], maximum = 1337):
         AI_moved_board = AI_moved_board.move(Checker.PLAYER_TWO, m[0], m[1])[1]
         # we've done a full move.
         # now call `get_o_best_move` on the new board.
-        if recurse_depth >= 4: # make this bigger for more look-ahead
+        if recurse_depth >= 2: # make this bigger for more look-ahead
             state_score = eval_game_state(AI_moved_board)
-            boards.append([AI_moved_board, state_score])
             if state_score > maximum: return [AI_moved_board, state_score] + moves_so_far
+            boards.append([AI_moved_board, state_score])
         else:
             copy_moves_so_far = moves_so_far[:]
             copy_moves_so_far.append(m)
             next_move = get_o_best_move(AI_moved_board, recurse_depth + 1, copy_moves_so_far, minimum)
-            boards.append(next_move)
-            if next_move[1] > minimum: minimum = next_move[1]
             if next_move[1] > maximum: return next_move + moves_so_far
+            if next_move[1] >= minimum:
+                minimum = next_move[1]
+                boards.append(next_move)
     if boards == []:
         print(moves_so_far)
         return [0,-1337] + moves_so_far
@@ -334,18 +335,19 @@ def get_o_best_move(board, recurse_depth = 0, moves_so_far = [], minimum = -1337
         opponent_moved_board = opponent_moved_board.move(Checker.PLAYER_ONE, m[0], m[1])[1]
         # we've done a full move.
         # now call `get_best_move` on the new board.
-        if recurse_depth >= 4: # make this bigger for more look-ahead
+        if recurse_depth >= 2: # make this bigger for more look-ahead
             state_score = eval_game_state(opponent_moved_board)
-            boards.append([opponent_moved_board, state_score])
             if state_score < minimum: return [opponent_moved_board, state_score] + moves_so_far
+            boards.append([opponent_moved_board, state_score])
                 
         else:
             copy_moves_so_far = moves_so_far[:]
             copy_moves_so_far.append(m)
             next_move = get_best_move(opponent_moved_board, recurse_depth + 1, copy_moves_so_far, maximum)
-            boards.append(next_move)
-            if next_move[1] < maximum: maximum = next_move[1]
             if next_move[1] < minimum: return next_move + moves_so_far
+            if next_move[1] <= maximum:
+                maximum = next_move[1]
+                boards.append(next_move)
     if boards == []:
         return [0,1337] + moves_so_far
     best_board = boards[0]
