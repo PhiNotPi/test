@@ -68,14 +68,6 @@ class Board:
         s += '  +-+-+-+-+-+-+-+-+'
         return s
 
-##    def number_of_pieces(self, player):
-##        p_count = 0
-##        for row in self.data:
-##            for p in row:
-##                if p is not None and p.player == player:
-##                    p_count += 1
-##        return p_count
-
     def move(self, player, from_coords, to_coords):
         """
         Given a player that is moving, and A0-style coordinates for from and to, moves the piece.
@@ -370,12 +362,18 @@ if __name__ == '__main__':
         board = Board()
         while True:
             print(board.render(Checker.PLAYER_ONE))
+            if len(get_valid_moves(board, Checker.PLAYER_ONE)) is 0:
+                print('Player 2 wins')
+                break
             move = get_o_best_move(board)
             board = comp_move(board, Checker.PLAYER_ONE, move[len(move)-1])
             print(board.render(Checker.PLAYER_ONE))  #disabled board rotation
+            if len(get_valid_moves(board, Checker.PLAYER_TWO)) is 0:
+                print('Player 1 wins')
+                break
             move = get_best_move(board)
             board = comp_move(board, Checker.PLAYER_TWO, move[len(move)-1])
-    if players == '1':
+    elif players == '1':
         board = Board()
         while True:
             print(board.render(Checker.PLAYER_ONE))
